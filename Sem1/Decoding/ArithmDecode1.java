@@ -1,0 +1,2 @@
+public class ArithmDecode1 {
+}

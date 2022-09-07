@@ -1,0 +1,65 @@
+start: s
+accept: ac
+reject: rj
+blank: _
+
+s 0 -> left 0 ^
+s 1 -> left 1 ^
+
+left 0 -> goright a >
+left 1 -> goright b >
+left a -> checkright a ^
+left b -> checkright b ^
+
+goright 0 -> goright 0 >
+goright 1 -> goright 1 >
+goright _ -> right _ <
+goright a -> right a <
+goright b -> right b <
+
+right 0 -> goleft a <
+right 1 -> goleft b <
+right a -> rj a ^
+right b -> rj b ^
+
+goleft 0 -> goleft 0 <
+goleft 1 -> goleft 1 <
+goleft _ -> left _ >
+goleft a -> left a >
+goleft b -> left b >
+
+checkright a -> gois0 0 <
+checkright b -> gois1 1 <
+
+gois0 a -> gois0 a <
+gois0 b -> gois0 b <
+gois0 0 -> gois0 0 <
+gois0 1 -> gois0 1 <
+gois0 _ -> checkleft0 _ >
+
+gois1 a -> gois1 a <
+gois1 b -> gois1 b <
+gois1 0 -> gois1 0 <
+gois1 1 -> gois1 1 <
+gois1 _ -> checkleft1 _ >
+
+checkleft0 0 -> checkleft0 0 >
+checkleft0 1 -> checkleft0 1 >
+checkleft0 a -> restartcheck 0 >
+checkleft0 b -> rj 1 ^
+
+checkleft1 0 -> checkleft1 0 >
+checkleft1 1 -> checkleft1 1 >
+ckeckleft1 a -> rj 0 ^
+checkleft1 b -> restartcheck 1 >
+
+restartcheck a -> restartcheck a >
+restartcheck b -> restartcheck b >
+restartcheck 0 -> rs2 0 ^
+restartcheck 1 -> rs2 1 ^
+
+rs2 0 -> rs2 0 >
+rs2 1 -> rs2 1 >
+rs2 a -> checkright a ^
+rs2 b -> checkright b ^
+rs2 _ -> ac _ ^

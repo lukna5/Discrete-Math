@@ -1,0 +1,26 @@
+2
+
+S 0 _ -> S _ > 0 >
+S 1 _ -> S _ > 1 >
+S o _ -> get2 o ^ _ <
+S a _ -> get2 a ^ _ <
+S _ _ -> res _ ^ _ <
+
+res _ 0 -> AC 0 ^ 0 ^
+res _ 1 -> AC 1 ^ 1 ^
+
+get2 o 1 -> left1 o ^ _ <
+get2 o 0 -> left0 o ^ _ <
+
+get2 a 1 -> left1 a ^ _ <
+get2 a 0 -> left0 a ^ _ <
+
+left1 o 1 -> S _ > 1 >
+left1 o 0 -> S _ > 1 >
+left0 o 1 -> S _ > 1 >
+left0 o 0 -> S _ > 0 >
+
+left1 a 1 -> S _ > 1 >
+left1 a 0 -> S _ > 0 >
+left0 a 1 -> S _ > 0 >
+left0 a 0 -> S _ > 0 >

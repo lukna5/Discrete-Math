@@ -1,0 +1,88 @@
+start: s
+accept: ac
+reject: rj
+blank: _
+
+s 0 -> s 0 >
+s 1 -> s 1 >
+s < -> takeFalse < <
+
+takeFalse 0 -> toSign0False * ^
+takeFalse 1 -> toSign1False * ^
+
+takeTrue 0 -> toSign0True * ^
+takeTrue 1 -> toSign1True * ^
+
+toSign0True * -> toSign0True * >
+toSign0True < -> take0True < >
+
+toSign1True * -> toSign1True * >
+toSign1True < -> take1True < >
+
+toSign0False * -> toSign0False * >
+toSign0False < -> take0False < >
+
+toSign1False * -> toSign1False * >
+toSign1False < -> take1False < >
+
+take0False 0 -> take0False 0 >
+take0False 1 -> take0False 1 >
+take0False _ -> compare0False _ <
+take0False * -> compare0False * <
+
+take0True 0 -> take0True 0 >
+take0True 1 -> take0True 1 >
+take0True _ -> compare0True _ <
+take0True * -> compare0True * <
+
+take1False 0 -> take1False 0 >
+take1False 1 -> take1False 1 >
+take1False _ -> compare1False _ <
+take1False * -> compare1False * <
+
+take1True 0 -> take1True 0 >
+take1True 1 -> take1True 1 >
+take1True _ -> compare1True _ <
+take1True * -> compare1True * <
+
+compare0False 0 -> falseGoLeft * <
+compare0False 1 -> trueGoLeft * <
+compare0False < -> rj < ^
+
+compare0True 0 -> trueGoLeft * <
+compare0True 1 -> trueGoLeft * <
+compare0True < -> rj < ^
+
+compare1True 0 -> falseGoLeft * <
+compare1True 1 -> trueGoLeft * <
+compare1True < -> rj < ^
+
+compare1False 0 -> falseGoLeft * <
+compare1False 1 -> falseGoLeft * <
+compare1False < -> rj < ^
+
+falseGoLeft 0 -> falseGoLeft 0 <
+falseGoLeft 1 -> falseGoLeft 1 <
+falseGoLeft < -> false < <
+
+trueGoLeft 0 -> trueGoLeft 0 <
+trueGoLeft 1 -> trueGoLeft 1 <
+trueGoLeft < -> true < <
+
+false * -> false * <
+false _ -> checkLast _ >
+false 0 -> takeFalse 0 ^
+false 1 -> takeFalse 1 ^
+
+true * -> true * <
+true _ -> ac _ >
+true 0 -> takeTrue 0 ^
+true 1 -> takeTrue 1 ^
+
+checkLast < -> res < >
+checkLast * -> checkLast * >
+
+res 0 -> ac 0 ^
+res 1 -> ac 1 ^
+res _ -> rj _ ^
+res * -> rj _ ^

@@ -1,0 +1,43 @@
+start: s
+accept: ac
+reject: rj
+blank: _
+
+s 0 -> s 0 >
+s 1 -> s 1 >
+s _ -> rightfirst _ <
+s a -> rightfirst a <
+s b -> rightfirst b <
+
+rightfirst 0 -> add0 a ^
+rightfirst 1 -> add1 b ^
+rightfirst a -> clear a ^
+rightfirst b -> clear b ^
+rightfirst _ -> clear _ >
+
+clear a -> clear 0 >
+clear b -> clear 1 >
+clear 0 -> gores 0 ^
+clear 1 -> gores 1 ^
+
+gores 0 -> gores 0 <
+gores 1 -> gores 1 <
+gores _ -> ac _ >
+
+add0 a -> add0 a >
+add0 b -> add0 b >
+add0 1 -> add0 1 >
+add0 0 -> add0 0 >
+add0 _ -> goleft 0 ^
+
+add1 a -> add1 a >
+add1 b -> add1 b >
+add1 1 -> add1 1 >
+add1 0 -> add1 0 >
+add1 _ -> goleft 1 ^
+
+goleft 0 -> goleft 0 <
+goleft 1 -> goleft 1 <
+goleft a -> goleft a <
+goleft b -> goleft b <
+goleft _ -> s _ >

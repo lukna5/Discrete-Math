@@ -1,0 +1,41 @@
+start: s
+accept: ac
+reject: rj
+blank: _
+
+s 0 -> goMaxRight 0 ^
+s 1 -> goMaxRight 1 ^
+
+goMaxRight 0 -> goMaxRight 0 >
+goMaxRight 1 -> goMaxRight 1 >
+goMaxRight _ -> right = <
+
+right 0 -> take0 * ^
+
+right 1 -> take1 * ^
+
+take0 0 -> take0 0 >
+take0 1 -> take0 1 >
+take0 * -> take0 * >
+take0 = -> take0 = >
+take0 _ -> goMaxLeft 0 ^
+
+take1 0 -> take1 0 >
+take1 1 -> take1 1 >
+take1 * -> take1 * >
+take1 = -> take1 = >
+take1 _ -> goMaxLeft 1 ^
+
+goMaxLeft 0 -> goMaxLeft 0 <
+goMaxLeft 1 -> goMaxLeft 1 <
+goMaxLeft * -> goMaxLeft * <
+goMaxLeft = -> goLeft = <
+
+goLeft * -> goLeft * <
+goLeft 0 -> take0 * ^
+goLeft 1 -> take1 * ^
+goLeft _ -> goEnd _ >
+
+goEnd * -> goEnd _ >
+goEnd = -> ac _ >
+

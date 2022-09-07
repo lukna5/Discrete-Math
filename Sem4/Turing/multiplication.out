@@ -1,0 +1,136 @@
+start: s
+accept: ac
+reject: rj
+blank: _
+
+s 0 -> s 0 <
+s 1 -> s 1 <
+s _ -> toSign* = >
+
+makeZero _ -> toSignSimple* 0 ^
+
+toSign* 0 -> toSign* 0 >
+toSign* 1 -> toSign* 1 >
+toSign* a -> toSign* 0 >
+toSign* b -> toSign* 1 >
+toSign* * -> gorm * >
+toSign* = -> toSign* = >
+
+toSignSimple* 0 -> toSignSimple* 0 >
+toSignSimple* 1 -> toSignSimple* 1 >
+toSignSimple* a -> toSignSimple* a >
+toSignSimple* b -> toSignSimple* b >
+toSignSimple* * -> gorm * >
+toSignSimple* = -> toSignSimple* = >
+
+gorm 0 -> gorm 0 >
+gorm 1 -> gorm 1 >
+gorm _ -> rm _ <
+
+rm 0 -> goSkip _ <
+rm 1 -> goAdd _ <
+rm * -> goEnd * ^
+
+goSkip 0 -> goSkip 0 <
+goSkip 1 -> goSkip 1 <
+goSkip * -> goSkip * <
+goSkip = -> goSkipLet = <
+
+goSkipLet a -> goSkipLet a <
+goSkipLet b -> goSkipLet b <
+goSkipLet 0 -> toSignSimple* a ^
+goSkipLet 1 -> toSignSimple* b ^
+goSkipLet _ -> toSignSimple* a ^
+
+goAdd 0 -> goAdd 0 <
+goAdd 1 -> goAdd 1 <
+goAdd * -> take * <
+
+take 0 -> goAdd0 a <
+take 1 -> goAdd1 b <
+take = -> goRemakeAdder = <
+
+goReplace a -> goReplace a <
+goReplace b -> goReplace b <
+goReplace 0 -> goToRemake a >
+goReplace 1 -> goToRemake b >
+
+goToRemake 0 -> goToRemake 0 >
+goToRemake 1 -> goToRemake 1 >
+goToRemake = -> toSign* = >
+
+goRemakeAdder 0 -> goRemakeAdder 0 <
+goRemakeAdder 1 -> goRemakeAdder 1 <
+goRemakeAdder a -> goRemakeAdder a <
+goRemakeAdder b -> goRemakeAdder b <
+goRemakeAdder A -> goRemakeAdder 0 <
+goRemakeAdder B -> goRemakeAdder 1 <
+goRemakeAdder _ -> goToLastNum _ >
+
+goToLastNum 0 -> goToLastNum 0 >
+goToLastNum 1 -> goToLastNum 1 >
+goToLastNum a -> replace a <
+goToLastNum b -> replace b <
+goToLastNum = -> replace = <
+
+replace 0 -> goTo= a ^
+replace 1 -> goTo= b ^
+replace _ -> goTo= a ^
+
+goTo= 0 -> goTo= 0 >
+goTo= 1 -> goTo= 1 >
+goTo= a -> goTo= a >
+goTo= b -> goTo= b >
+goTo= = -> toSign* = >
+
+goAdd0 0 -> goAdd0 0 <
+goAdd0 1 -> goAdd0 1 <
+goAdd0 = -> add0 = <
+
+goAdd1 0 -> goAdd1 0 <
+goAdd1 1 -> goAdd1 1 <
+goAdd1 = -> add1 = <
+
+add0 a -> add0 a <
+add0 b -> add0 b <
+add0 A -> add0 A <
+add0 B -> add0 B <
+add0 _ -> goToAdder A ^
+add0 0 -> goToAdder A ^
+add0 1 -> goToAdder B ^
+
+add1 a -> add1 a <
+add1 b -> add1 b <
+add1 A -> add1 A <
+add1 B -> add1 B <
+add1 _ -> goToAdder B ^
+add1 0 -> goToAdder B ^
+add1 1 -> justAdd1 A <
+
+justAdd1 0 -> goToAdder 1 ^
+justAdd1 1 -> justAdd1 0 <
+justAdd1 _ -> goToAdder 1 ^
+
+goToAdder 0 -> goToAdder 0 >
+goToAdder 1 -> goToAdder 1 >
+goToAdder a -> goToAdder a >
+goToAdder b -> goToAdder b >
+goToAdder A -> goToAdder A >
+goToAdder B -> goToAdder B >
+goToAdder = -> goAdder = >
+
+goAdder 0 -> goAdder 0 >
+goAdder 1 -> goAdder 1 >
+goAdder a -> take a <
+goAdder b -> take b <
+
+goEnd 0 -> goEnd _ <
+goEnd 1 -> goEnd _ <
+goEnd * -> goEnd _ <
+goEnd = -> end _ <
+
+end 0 -> end 0 <
+end 1 -> end 1 <
+end a -> end 0 <
+end b -> end 1 <
+end _ -> ac _ >

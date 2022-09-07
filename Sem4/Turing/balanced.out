@@ -1,0 +1,26 @@
+start: s1
+accept: ac
+reject: rj
+blank: _
+
+s1 _ -> ac _ ^
+s1 ( -> s ( ^
+s1 ) -> s ) ^
+
+s ( -> s ( >
+s * -> s * >
+s ) -> deleteleft * <
+s _ -> rj _ ^
+
+deleteleft ( -> gos * ^
+deleteleft * -> deleteleft * <
+
+gos * -> gos * <
+gos ) -> gos ) <
+gos ( -> s ( >
+gos _ -> gosright _ >
+
+gosright ) -> rj ) ^
+gosright * -> gosright * >
+gosright _ -> ac _ ^
+gosright ( -> s ( ^

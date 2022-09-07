@@ -1,0 +1,40 @@
+start: s
+accept: ac
+reject: rj
+blank: _
+
+s 0 -> toSign 0 ^
+s 1 -> toSign 1 ^
+
+toSign 0 -> toSign 0 >
+toSign 1 -> toSign 1 >
+toSign + -> goRight + >
+
+goRight 0 -> goRight 0 >
+goRight 1 -> goRight 1 >
+goRight * -> goRight * >
+goRight _ -> right _ <
+
+right 1 -> goLeft 0 ^
+right 0 -> right 1 <
+right + -> clear * >
+
+goLeft 0 -> goLeft 0 <
+goLeft 1 -> goLeft 1 <
+goLeft * -> goLeft * <
+goLeft + -> add1 + <
+
+add1 0 -> toSign 1 ^
+add1 1 -> add1 0 <
+add1 _ -> toSign 1 ^
+
+clear 0 -> clear * >
+clear 1 -> clear * >
+clear 2 -> clear * >
+clear * -> clear * >
+clear _ -> res _ <
+
+res 0 -> res 0 <
+res 1 -> res 1 <
+res * -> res _ <
+res _ -> ac _ >
